@@ -1,0 +1,79 @@
+<% layout("/layouts/boilerplate") %>
+
+    <body>
+        <!-- <div class="row"> -->
+        <!-- if we want space from left side then we use offset-2  -->
+        <div class="col-8 offset-2">
+            <h2>Create new listing</h2>
+            <form method="post" action="/listings" class="needs-validation" novalidate>
+                <!-- To ease the parsing the data in app.js we make the object key  -->
+                <!-- //mb-3 means margin bottam 3 -->
+                <div class="mb-3">
+                    <label class="form-label" for="title">Title</label>
+                    <input name="listing[title]" placeholder="Add a catchy tiitle" class="form-control" required>
+                    <div class="valid-feedback">
+                        Looks good!
+                    </div>
+                </div>
+
+
+                <div class="mb-3">
+                    <label for="description" class="form-label">Description</label>
+                    <textarea name="listing[description]" placeholder="Enter description" class="form-control"
+                        required></textarea>
+                    <div class="invalid-feedback">
+                        Please provide a valid .
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label for="image" class="form-label">Image</label>
+                    <input name="listing[image][url]" placeholder="Enter Image URL/Link" class="form-control">
+
+                    <!-- <div class="invalid-feedback">
+                        Please provide a valid image.
+                    </div> -->
+                </div>
+
+                <div class="row">
+                    <div class="col-md-8">
+                        <div class="mb-3">
+                            <label for="price" class="form-label">Price</label>
+                            <input name="listing[price]" placeholder="1200"  class="form-control"  required>
+                            <div class="invalid-feedback">
+                                Please provide a valid city.
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <div class="mb-3">
+                            <label for="location" class="form-label">location</label>
+                            <input name="listing[location]" placeholder="Gurugram,chandigurh,Hisar" class="form-control"
+                                required>
+                                <div class="invalid-feedback">
+                                    Please provide a valid location.
+                                </div>
+                        </div>
+                        
+                    </div>
+
+
+                </div>
+                <div class="mb-3">
+                    <label for="location" class="form-label">country</label>
+                    <input name="listing[country]" placeholder="India" class="form-control required">
+                    <div class="invalid-feedback">
+                        Please provide a valid country.
+                    </div>
+                </div>
+                <br>
+                <button class="btn btn-dark add-btn mt-3">Submit</button>
+                <br><br><br>
+            </form>
+
+        </div>
+       
+
+
+    </body>
