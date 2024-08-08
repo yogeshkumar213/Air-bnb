@@ -20,7 +20,7 @@ module.exports.listingSchema = Joi.object({
 // const reviews = require("./models/reviews");
 module.exports.reviewSchema=Joi.object({
     review: Joi.object({
-        rating:Joi.number().required(),
+        rating:Joi.number().required().min(1).max(5),
         comment:Joi.string().required(),
     }).required(),
-})
+});

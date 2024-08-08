@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
+const Review=require ("./reviews.js")
 const listingSchema = new Schema({
     title: {
         type: String,
@@ -28,7 +29,19 @@ const listingSchema = new Schema({
             type: Schema.Types.ObjectId,
             ref: "Review"
         }
-    ]
+    ],
+    owner:{
+        type:Schema.Types.ObjectId,
+        ref:"User"
+    }
 });
+// we have create post mongoose middleware which is work on findeOneDelete which is trigger by findByidAndDelete which is in listig delete route
+//post mongoose middleware
+listingSchema.post("findOneAndDelete",async (listing)=>{
+    if(listing){
+        await Review.deleteMany({_id:{$in:listing.reviews}})
+    }
+
+})
 const Listing = mongoose.model("Listing", listingSchema);
 module.exports = Listing;

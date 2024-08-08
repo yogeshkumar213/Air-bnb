@@ -1,24 +1,26 @@
 const express=require("express");
 const mongoose=require("mongoose");
-const Listing=require ("./models/listing.js");
+// const Listing=require ("./models/listing.js");
 const methodOverride=require("method-override");
-const asyncWrap=require("./utils/Asyncwrap.js");
+// const asyncWrap=require("./utils/Asyncwrap.js");
 const ExpressError=require("./utils/ExpressError.js");
-const Review=require("./models/reviews.js")
+const session=require("express-session");
+const passport=require("passport");
+const LocalStrategy=require("passport-local");
+const User=require("./models/user.js")
+// const Review=require("./models/reviews.js")
 
-const {listingSchema,reviewSchema}=require("./Schema.js");
-
-
+// const {listingSchema,reviewSchema}=require("./Schema.js");  
 const ejsMate=require("ejs-mate");
 const path=require("path");
+// const reviews = require("./models/reviews.js");
 const app=express ();
-app.engine("ejs",ejsMate);
-app.use(methodOverride("_method"));
-app.use(express.urlencoded({extended:true}));
-const port =8080;
-app.set("views",path.join(__dirname ,"views"));
-app.set("view engine","ejs");
-app.use(express.static(path.join(__dirname,"/public")));
+
+
+
+const listingRouter=require("./routes/listing.js");
+const reviewRouter=require("./routes/review.js");
+const userRouter=require("./routes/user.js");
 
 const MONGO_URL="mongodb://127.0.0.1:27017/wonderlust";
 main()
@@ -32,138 +34,88 @@ main()
 async function main(){
     await mongoose.connect(MONGO_URL)
 }
+
+app.engine("ejs",ejsMate);
+app.use(methodOverride("_method"));
+app.use(express.urlencoded({extended:true}));
+app.use(express.json());
+const port =8080;
+app.set("views",path.join(__dirname ,"views"));
+app.set("view engine","ejs");
+app.use(express.static(path.join(__dirname,"/public")));
 app.get("/",(req,res)=>{
     res.send("wonderlust")
 });
+const sessionOption={
+    secret:"mysuperseceretcode",
+    resave:false,
+    saveUninitialized:true,
+    cookie:{
+        expires:Date.now()+7*24*60*60*1000,
+        httpOnly:true,
 
-const validateReview=(req,res,next)=>{
-    let {error}=reviewSchema.validate(req.body);
-       // console.log(error.details);
-    if(error){
-        // res.send("eror occuring")
-        // let revErr=error.details.map((el)=>el.message).join(",")
-        throw new ExpressError(400,"something wrong");
-    }else{
-        next();
     }
 }
-const validateListing=(req,res,next)=>{
-     //listeningschema means joi constraint/joi schema. does my req.body satisfying the lisginingSchema(joi constraint) or not ?
-    let{error}=listingSchema.validate(req.body);
-    if(error){
-        //    This is an array provided by Joi that contains detailed information about each validation error. Each element in this array is an object that represents a specific validation error.
-        let errMsg=error.details.map((el)=>el.message).join(",")
-        // console.log(error)
-        throw new ExpressError(400,errMsg);
-    }else{
-        next();
-    }
-}
-
-// app.get("/testListing",async (req,res)=>{
-//     let sampleListing=new Listing(
-//         {
-//             title:"My New villa",
-//             description:"By the beach",
-//             price:1299,
-//             location:"calagute,Goa",
-//             country:"India",
-//         }
-//     );
-//     await sampleListing.save();
-//     console.log("sample was saved")
-//     res.send("succescful testing")
-// });
+app.use(session( sessionOption))
 
 
-//post route
-app.post("/listings/:id/reviews",validateReview,asyncWrap(async(req,res,next)=>{
-    let listing=await Listing.findById(req.params.id);
-    let newReviews=new Review(req.body.review);
-    listing.reviews.push(newReviews);
+//use flash package
+const flash=require("connect-flash");
+app.use(flash());
 
-   
-   await newReviews.save();
-   await listing.save();
-//    res.send("reviews was saved")
 
-    res.redirect(`/listings/${listing._id}`)
-}));
 
-//Index route
-app.get("/listings", asyncWrap(async (req,res,next)=>{
-    const allListings= await Listing.find({});
-    // res.send(Listings);
-    res.render("index.ejs",{allListings});
-}));
+app.use(passport.initialize());
+//why we use passport.session() we want user can do only one time sinup/login in a session not when it switch any page
+app.use(passport.session());
+//we want authenticate the model (User) using LocalStrategy in passport
+passport.use(new LocalStrategy(User.authenticate()));
+passport.serializeUser(User.serializeUser());
+passport.deserializeUser(User.deserializeUser());
 
-//new route
-app.get("/listings/new",(req,res,next)=>{
-    res.render("new.ejs")
+
+//jo value hmme render karwant hai appni ejs file k sath usse hum res.locals mai store kar denge hmmne res.locals k 
+//ander ek (res.locals.success) success variable create kiya or uske ander hmmne jo flash karwana hai usko store kar diya
+app.use((req,res,next)=>{
+    res.locals.success=req.flash("success");
+    res.locals.error=req.flash("error");
+    res.locals.currUser=req.user;
+    // console.log(res.locals.currUser)
+    next();
+}); 
+
+app.get("/registerUser",async (req,res)=>{
+    let fakeUser=new User({
+        email:"yogesh@gmail.com",
+        username:"yogesh"
+    })
+    let newUser=await User.register(fakeUser,"abc@123");
+    res.send(newUser);
 })
 
-//show individual listing
-app.get("/listings/:id",asyncWrap(async (req,res,next)=>{
-    let{id}=req.params;
-    let listing=await Listing.findById(id);
-    // console.log(find)
-    res.render("show.ejs",{listing})
-}));
 
-//Create new listings
+app.use("/",userRouter)
+app.use("/listings",listingRouter)
+//note if we use normal way then we find an error when we create any review because id of this listing is not
+// is not going to the reviews.js file so we use mergeparams property such that id revew.js file mai ja skke
+// ager hmmare routes k ander kuch parrameter hai jo agge use ho skte hai hmmare callback mai then always we use merageparams property in express.Router
+app.use("/listings/:id/reviews",reviewRouter)
+// when we use router property to optimize the serverside code means CRUD operation (/listings/:id/reviews) this route is called parent route means comman route mtlb jo starting mai hogga hi hogga
+//and or agger review file mai jo route use huye hai called child route
 
-app.post("/listings",validateListing,asyncWrap(async (req,res,next)=>{
-   //we can set default image with the help of javascript as well as use "default" parameter and set parameter 
-   // which we have use listing.js file
-
-    // if(!req.body.listing.imgage){
-    //     req.body.listing.image={};
-    // }
-    // if(! req.body.listing.image.url){
-    //     req.body.listing.image.url="https://tse1.mm.bing.net/th?id=OIP.AY6VgIwEbqiddBM8wGFFsAHaEo&pid=Api&P=0&h=180"
-
-    // }
-        const newListing=new Listing(req.body.listing);
-        console.log(newListing);
-        await newListing.save();
-        res.redirect("/listings")
-    
-}));
-
-
-//edit route
-app.get("/listings/:id/edit",validateListing,asyncWrap (async (req,res,next)=>{
-    let{id}=req.params;
-    let listing=await Listing.findById(id);
-    res.render("edit.ejs",{listing});
-}));
-
-// update route
-app.put("/listings/:id",asyncWrap(async (req,res,next)=>{
-   let {id}=req.params;
-   await Listing.findByIdAndUpdate(id,{...req.body.listing});
-   res.redirect(`/listings/${id}`);
-
-}));
-//delete route
-app.delete("/listings/:id",asyncWrap(async (req,res,next)=>{
-    console.log("delete succesfully")
-    let {id}=req.params;
-   let deleteListing= await Listing.findByIdAndDelete(id)
-   res.redirect("/listings")
-}));
-
-//catch all route
-app.all("*",(req,res,next)=>{
-next(new ExpressError(404,"Page not found"))
-});
+    //catch all route
+    app.all("*",(req,res,next)=>{
+        next(new ExpressError(404,"Page not found"))
+        });
+   
 
 //errhandling middleware in backend
 app.use((err,req,res,next)=>{
     let {statusCode =500, message ="something went wrong"}=err;
+    res.status(statusCode)
     res.render("error.ejs",{err});
-    // res.status(statusCode).send(message)
-})
+   
+});
 
 
 app .listen(port,(req,res)=>{

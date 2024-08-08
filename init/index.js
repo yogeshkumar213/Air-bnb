@@ -15,6 +15,9 @@ async function main(){
 };
 const initDB=async ()=>{
     await Listing.deleteMany({});
+    //initData k ander jo data hai uske upper map function lgga do or jo individual listing hai wo too aayengi hi aayengi or uske sath owner property 
+    // bhi set kar do each listing k sath map function ek nya array create karta hai so phle walla delete ho jayega data using Listing.deleteMany({})
+    initData.data=initData.data.map((obj)=>({...obj,owner:'66b0b5b7ecf6680fe883ee1d'}))
     await Listing.insertMany(initData.data);
     console.log("data was saved")
 };
