@@ -1,29 +1,175 @@
 <% layout ("/layouts/boilerplate")%>
-<body>
-    <h3>All Listings</h3>
-    <!-- <form method="GET" action="/listings/new">
+
+  <!-- <h3>All Listings</h3>  -->
+  <!-- <form method="GET" action="/listings/new">
         <button>Create new listing</button>
     </form> -->
-    <div class="row row-cols-lg-3 row-cols-md-2 row-cols-sm-1" >
-      <%for(let listing of allListings){%>
-        <a href="/listings/<%=listing._id%>" class="listing-link">
-          <div class="card col listing-card" style="width: 20rem;">
-            <img src="<%= listing.image.url%>" class="card-img-top" alt="listing_image" style="height: 20rem">
-            <div class="card-img-overlay"></div>
+  <!-- <style>
+  filters,leftButton,righButton{
+    display: flex !important;
+    flex-wrap:wrap;
+    
+    
+
+  }
+</style> -->
+
+  <div class="row row-cols-sm-1">
+    <div class="d-flex align-items-center ">
+
+      <div id="filters" class="d-flex">
+
+        
+        <!-- <div class="slideButton " id="leftButton">
+          <i class="fa-solid fa-angle-left"></i>
+        </div> -->
+
+
+        <div class="filter " id="Trending">
+          <i class="fa-solid fa-fire"></i>
+          <p>Trending</p>
+        </div>
+
+        <div class="filter " id="Rooms">
+          <a href="/listings/filter?category=Rooms">
+            <i class="fa-solid fa-bed"></i>
+            <p>rooms</p>
+          </a>
+        </div>
+
+        <div class="filter " id="mountain-city">
+          <a href="/listings/filter?category=Mountain city">
+            <i class="fa-solid fa-mountain-city"></i>
+            <p>Mountain city</p>
+          </a>
+        </div>
+
+        <div class="filter" id="Mountains">
+          <a href="/listings/filter?category=Mountains">
+            <i class="fa-solid fa-mountain"></i>
+            <p>Mountains</p>
+          </a>
+        </div>
+
+
+        <div class="filter" id="Castles">
+          <a href="/listings/filter?category=Castles">
+            <i class="fa-brands fa-fort-awesome"></i>
+            <p>Castles</p>
+          </a>
+        </div>
+
+        <div class="filter" id="pools">
+          <a href="/listings/filter?category=pools">
+            <i class="fa-solid fa-person-swimming"></i>
+            <p>Amazing-pools</p>
+          </a>
+        </div>
+
+        <div class="filter" id="Camping">
+          <a href="/listings/filter?category=Camping">
+            <i class="fa-solid fa-campground"></i>
+            <p>Camping</p>
+          </a>
+        </div>
+
+        <div class="filter" id="Farms">
+          <a href="/listings/filter?category=Farms">
+            <i class="fa-solid fa-cow"></i>
+            <p>Farms</p>
+          </a>
+        </div>
+
+        <div class="filter" id="Arctic">
+          <a href="/listings/filter?category=Arctic">
+            <i class="fa-regular fa-snowflake"></i>
+            <p>Arctic</p>
+          </a>
+        </div>
+
+        <div class="filter" id="domes">
+          <a href="/listings/filter?category=domes">
+            <i class="fa-solid fa-igloo"></i>
+            <p>Domes</p>
+          </a>
+        </div>
+
+
+
+        <div class="filter" id="boats">
+          <a href="/listings/filter?category=boats">
+            <i class="fa-solid fa-sailboat"></i>
+            <p>boats</p>
+          </a>
+        </div>
+
+
+
+
+        
+        <!-- <div class="slideButton " id="rightButton">
+          <i class="fa-solid fa-angle-right"></i>
+        </div> -->
+
+
+
+      </div>
+      <div class="tax-toggle ml-2">
+        <div class="form-check form-switch form-check-reverse">
+          <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault">
+          <label class="form-check-label change-things" for="flexSwitchCheckDefault"><b>Display total after
+              taxes</b>
+          </label>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+  <div class="row g-4">
+    <% for (let listing of allListings) { %>
+      <div class="col-lg-4 col-md-6 col-sm-12">
+        <a href="/listings/<%= listing._id %>" class="listing-link">
+          <div class="card listing-card h-100">
+            <img src="<%= listing.image.url %>" class="card-img-top" alt="listing_image">
             <div class="card-body">
               <p class="card-text">
-                <b><%=listing.title%></b><br>
-                <% if (listing.price) { %>
-                  &#8377; <%= listing.price.toLocaleString("en-IN") %>/night
-                <% } else { %>
-                  Price not available
-                <% } %>
-            </p>
+                <b>
+                  <%= listing.title %>
+                </b><br>
+                &#8377; <%= listing.price.toLocaleString("en-IN") %>/night
+                  <b><i class="tax-info">&nbsp;&nbsp;<%= ((listing.price) + (((listing.price) / 100) *
+                        18)).toLocaleString("en-IN") %>/night</i></b>
+              </p>
             </div>
           </div>
         </a>
+      </div>
+      <% } %>
+  </div>
+  <script src="/js/tax.js"></script>
+
+
+
+  <!-- <script>
+   function fetchListing(listingType) { 
+       //javaScript inbuilt [ fetch() ]function which send the request to the backend
+        fetch(`/listings/filter?category=${listingType}`, {
+         method: "Get"
+        }) 
       
-        <% }%>  
-    </div>
-   
-</body>
+     }
+    document.getElementById("Rooms").addEventListener("click", () => { 
+      fetchListing("Rooms")
+    })
+   </script>   -->

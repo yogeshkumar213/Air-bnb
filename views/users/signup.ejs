@@ -1,7 +1,36 @@
 <% layout("/layouts/boilerplate") %>
-    <h2 class="col6 offset-3 mb-3">Signup on wonderlust</h2>
+<style>
+    @media only screen and (max-width:699px){
+    .signup{
+      display: flex ;
+      flex-direction: column ;
+      width: 100% ;
+      margin-left: 1rem;
+      position: sticky;
+      margin-top: 1rem;
+    }
+    .signup .col-6.offset-3{
+        margin-left: 0 !important;
+        width: 80%;
+        position: sticky;
+        margin-top: 1rem;
+      }
+      .signup .col6.offset-3.mb-3.mt-2{
+        margin-left: 0;
+       margin-top: 0;
+      }
+
+    }
+  
+    
+
+</style>
+<div class="signup ">
+
+
+    <h2 class="col6 offset-3 mb-3 mt-2">Signup on wonderlust</h2>
     <form action="/signup" method="post" class="needs-validation" novalidate>
-        <div class="col-6 offset-3">
+        <div class="col-6 offset-3 ">
             <div class="mb-3">
                 <label class="form-label" for="username">Username</label>
                 <input name="username" class="form-control" id="username" required>
@@ -17,10 +46,11 @@
                 <label class="form-label" for="password">password</label>
                 <input name="password" class="form-control" type="password" id="password" required>
                 <div class="valid-feedback">
-            Looks good!
-        </div>
+                    Looks good!
+                </div>
             </div>
             <button class="btn btn-success">Signup</button>
 
         </div>
     </form>
+</div>

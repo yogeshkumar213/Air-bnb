@@ -1,23 +1,43 @@
 <% layout("/layouts/boilerplate") %>
-    <h2 class="col6 offset-3 mb-3">login on wonderlust</h2>
-    <form action="/login" method="post" class="needs-validation" novalidate>
-        <div class="col-6 offset-3">
-            <div class="mb-3">
-                <label class="form-label" for="username">Username</label>
-                <input name="username" class="form-control" type="text" id="username" required>
-                <div class="valid-feedback">
-                    Looks good!
-                </div>
+    <style>
+@media only screen and (max-width:699px){
+    .login .col-6.offset-3.mb-3.mt-2{
+        margin-left: 1rem !important;
+        margin-top: 1rem;
+    }
+    .login .col-6.offset-3{
+        margin-left: 1rem;
+        margin-top: 2rem;
+        width: 80%;
+    }
 
-            </div>
-            <div class="mb-3">
-                <label class="form-label" for="password">password</label>
-                <input name="password" class="form-control" id="password" type="password" required>
-                <div class="valid-feedback">
-                    Looks good!
-                </div>
 
+}
+
+    </style>
+    <div class="login">
+
+
+        <h2 class="col-6 offset-3 mb-3 mt-2">login on wonderlust</h2>
+        <form action="/login" method="post" class="needs-validation" novalidate>
+            <div class="col-6 offset-3">
+                <div class="mb-3">
+                    <label class="form-label" for="username">Username</label>
+                    <input name="username" class="form-control" type="text" id="username" required>
+                    <div class="valid-feedback">
+                        Looks good!
+                    </div>
+
+                </div>
+                <div class="mb-3">
+                    <label class="form-label" for="password">password</label>
+                    <input name="password" class="form-control" id="password" type="password" required>
+                    <div class="valid-feedback">
+                        Looks good!
+                    </div>
+
+                </div>
+                <button class="btn btn-success">login</button>
             </div>
-            <button class="btn btn-success">login</button>
-        </div>
-    </form>
+        </form>
+    </div>

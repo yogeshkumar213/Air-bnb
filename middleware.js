@@ -73,7 +73,7 @@ module.exports.isReviewAuthor=async (req,res,next)=>{
     console.log(review)
     // console.log(Review.author);
     if(! review.author._id.equals(res.locals.currUser._id)){
-        console.log(res.locals.currUser._id);
+        // console.log(res.locals.currUser._id);
        req.flash("error","you are not the author of this review")
       return res.redirect(`/listings/${id}`)
     }

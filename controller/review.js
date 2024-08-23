@@ -6,17 +6,22 @@ const Review=require("../models/reviews.js");
 
 
 module.exports.createReview=async(req,res,next)=>{
-    console.log(req.params.id)
+    // console.log(req.params.id)
       let listing=await Listing.findById(req.params.id);
+      
       
       let newReviews=new Review(req.body.review);
       newReviews.author=req.user._id;
-    //   console.log(newReviews)
+      
+      // console.log(newReviews)
       listing.reviews.push(newReviews);
-     await newReviews.save();
-     await listing.save();
+      let reviewSave= await newReviews.save();
+   
+     let listingSave=await listing.save();
+   
+  
      req.flash("success","new review is created");
-  //    res.send("reviews was saved")
+  //   
       res.redirect(`/listings/${listing._id}`)
   // 
   // let data = req.body.review;

@@ -1,31 +1,130 @@
+<style>
+  .search-btn i {
+    display: inline;
+    margin: 0 1rem 0 1rem;
+    margin-right: 0.5rem;
+
+
+  }
+
+  .search-btn {
+    background-color: #fe424d;
+    color: #fff;
+    border-radius: 25px;
+    padding: 0 0.8rem 0 0;
+    margin: 0.2rem 1rem 1rem 1rem;
+
+    height: 2rem;
+  }
+
+  .search-btn:hover {
+    background-color: #fe424d;
+    color: #fff;
+  }
+
+  .search-inp {
+    /* margin-right: 10rem; */
+    height: 2.5rem;
+    border-radius: 25px;
+    padding: 0.5rem 0.3rem 0.5rem 2rem;
+    font-size: 1rem;
+  }
+
+  .both {
+    display: flex;
+    align-items: center;
+
+  }
+
+  /* @media only screen and (max-width:699px){
+    .navbar-nav.ms-auto{
+      margin-left:1rem;
+
+    }
+  } */
+</style>
+
+
+
+
+
+
+
 <nav class="navbar navbar-expand-md bg-body-light border-bottom sticky-top">
   <div class="container-fluid">
-    <a class="navbar-brand" href="/"><i class="fa-regular fa-compass"></i></a>
-    <button class="navbar-toggler" type="button"
-     data-bs-toggle="collapse" 
-     data-bs-target="#navbarNavAltMarkup" >
-    
+    <a class="navbar-brand" href="/listings"><i class="fa-regular fa-compass"></i></a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup">
       <span class="navbar-toggler-icon"></span>
     </button>
+
     <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
       <div class="navbar-nav">
-        <a class="nav-link "  href="/">Home</a>
-        <a class="nav-link" href="/listings">All Listings</a>
-        <a class="nav-link" href="/listings/new">Add new</a>
-
+        <a class="nav-link" href="/listings"><b>Explore</b></a>
       </div>
-      <div class="navbar-nav ms-auto">
-       <% if(!currUser){%>
-          <a class="nav-link " href="/login">login</a>
-          <a class="nav-link" href="/signup">signup</a>
-      <%  }%>
-       <% if(currUser){%>
-          <a class="nav-link" href="/logout">logout</a>
-     <%   }%>
-       
-       
+      <div class="navbar-nav ms-auto ">
+        <!-- <form class="d-flex" role="search"> -->
 
+        <div class="both">
+
+          <div id="alert-container"></div>
+          <form action="/listings/search/list" method="post" class="d-flex" onsubmit="return validateInput()">
+
+            <input class="form-control me-2 search-inp" type="text" placeholder="Search-destination" aria-label="Search"
+              name="search" id="inpfield">
+
+            <button class="btn search-btn" type="submit"><i class="fa-solid fa-magnifying-glass"></i>search</button>
+
+          </form>
+
+        </div>
+
+
+
+
+        <!-- </form> -->
       </div>
+      
+        <div class="navbar-nav ms-auto">
+          <a class="nav-link" href="/listings/new"><b>Airbnb your home</b></a>
+          <% if(!currUser){%>
+            <a class="nav-link " href="/login"><b>login</b></a>
+            <a class="nav-link" href="/signup"><b>signup</b></a>
+            <% }%>
+              <% if(currUser){%>
+                <a class="nav-link" href="/logout"><b>logout</b></a>
+                <% }%>
+
+
+
+        </div>
+      
     </div>
   </div>
 </nav>
+
+<script>
+  // alert("hello")
+  function validateInput() {
+    // alert("hello")
+    let inputField = document.getElementById("inpfield").value.trim()
+
+    if (inputField == "") {
+      let alertContainer = document.getElementById("alert-container")
+      //if we want to use bootstrap style in javascript then we use innerHtml means Dom elements
+      //       alertContainer.innerHTML=`<div class="alert alert-danger" role="alert">
+      //   A simple danger alert—check it out!
+      //     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      // </div>`;
+
+
+      //  console.log("empty")
+      alert("please enter the search destination");
+
+      return false;
+    }
+    else {
+      return true;
+    }
+  }
+
+</script>

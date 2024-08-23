@@ -1,94 +1,177 @@
-body{
-     font-family: "Plus Jakarta Sans", sans-serif !important;
-     /* in new.ejs file if we want our form occupy full width and rest of the space is occypied by footer*/
-     display: flex;
-     flex-direction: column;
-     height: 100vh;
+/* Body Flexbox for Full Page Layout */
+body {
+    font-family: "Plus Jakarta Sans", sans-serif !important;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
 
+.container {
+    flex: 1; /* Occupy the full height except navbar and footer */
+    width: 100%;
+    /* overflow-y: auto */
+    /* overflow: auto; */
 }
-.container{
-    flex: 1;
-}
-.navbar{
+
+.navbar {
     height: 5rem;
     background-color: white;
+    position: sticky;
+    top: 0;
+    /* z-index: 1000;  */
+   
 }
-.fa-compass{
-    color:#fe424d;
+@media only screen and (max-width: 599px) {
+.navbar-collapse{
+    display: flex;
+    flex-direction: column;
+    background-color: white;
+    align-items: flex-start !important ;
+    /* right: 0; */
+    margin: 0;
+    padding: 0;
+  
+    
 }
-.nav-link{
-    color :#222222 !important;
-}
-.f-info-links a{
-    text-decoration: none;
-    color:#222222 ;
-}
-.f-info-links:hover{
-text-decoration: underline;
+.navbar-nav.ms-auto {
+    margin-left: 1rem !important; /* Remove auto margin to prevent pushing items to the right */
 }
 
-.f-info-socials,.f-info-links,.f-info-brand{
-    width: 100%;
+}
+
+
+
+
+.fa-compass {
+    color: #fe424d;
+}
+
+.nav-link {
+    color: #222222 !important;
+}
+
+/* Footer Styling */
+.f-info {
+    text-align: center;
+    background-color: #ebebeb;
+    height: 8rem;
     display: flex;
     align-items: center;
     justify-content: center;
+    flex-wrap: wrap;
+    margin-top: auto;
+    /* Push footer to the bottom  */
 }
-  
-.f-info-socials i{
+
+.f-info-links a {
+    text-decoration: none;
+    color: #222222;
+}
+
+.f-info-links:hover {
+    text-decoration: underline;
+}
+
+.f-info-socials i {
     font-size: 1.2rem;
     margin-right: 1.2rem;
 }
 
-  
-.f-info{
-text-align: center;
-background-color: #ebebeb;
-height: 8rem;
-flex-wrap: wrap;
-justify-content: center;
-display: flex;
-
+/* Card Styling */
+.listing-card {
+    border: none !important;
+    margin-bottom: 1rem !important;
 }
-.listing-card{
-border:none !important;
-margin-bottom: 2rem !important;
 
-}
-.card-img-top{
+.card-img-top {
     border-radius: 1rem !important;
     width: 100% !important;
     object-fit: cover !important;
-} 
-.card-body{
+    height: 20rem;
+}
+
+.card-body {
     padding: 0 !important;
 }
-.card-text p{
-     font-weight:400 !important;
+
+.card-text p {
+    font-weight: 400 !important;
 }
-.listing-link{
+
+.listing-link {
     text-decoration: none !important;
 }
-/* card-effect */
-.card-img-overlay{
+
+.card-img-overlay {
     opacity: 0;
 }
-.card-img-overlay:hover{
+
+.card-img-overlay:hover {
     opacity: 0.2;
     background-color: white;
+}
 
-}
-.add-btn{
+/* Button Styling */
+.add-btn,
+.edit-btn {
     background-color: #fe424d !important;
     border: none !important;
 }
-.edit-btn{
-    background-color: #fe424d !important;
-    border: none !important;
+
+/* Map Styling */
+#map {
+    height: 400px;
+    width: 80vh;
+    border-radius: 50%;
+    margin: 0 auto; /* Center the map horizontally */
+    margin-bottom: 2rem;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
-.show-img{
-    height: 30vh;
+
+/* Adjust the Map for Mobile */
+@media only screen and (max-width: 599px) {
+    #map {
+        height: 40vh;
+        width: 40vh;
+    }
+
+    .card-img-top {
+        height: 15rem;
+    }
 }
-.btns{
-    display: flex;
-    
+
+/* Adjust the Map for Tablets */
+@media only screen and (min-width: 600px) and (max-width: 1024px) {
+    #map {
+        height: 50vh;
+        width: 50vh;
+    }
+
+    .card-img-top {
+        height: 18rem;
+    }
 }
+
+/* Adjust the Map for Larger Screens */
+@media only screen and (min-width: 1025px) {
+    #map {
+        height: 60vh;
+        width: 60vh;
+    }
+
+    .card-img-top {
+        height: 20rem;
+    }
+}
+
+/* Dropdown Styling */
+.dropdown-toggle {
+    margin-top: 30px;
+}
+
+
+
+
+
+
+
