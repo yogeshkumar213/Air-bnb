@@ -56,21 +56,30 @@ body {
     background-color: #ebebeb;
     height: 8rem;
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
-    flex-wrap: wrap;
-    margin-top: auto;
+    flex-wrap: nowrap;
+    /* margin-top: auto; */
     /* Push footer to the bottom  */
+}
+.f-info-brand{
+    margin-top: 1rem;
+    margin-bottom: 1rem;
 }
 
 .f-info-links a {
     text-decoration: none;
     color: #222222;
+
+   
 }
 
 .f-info-links:hover {
     text-decoration: underline;
 }
+
+
 
 .f-info-socials i {
     font-size: 1.2rem;
