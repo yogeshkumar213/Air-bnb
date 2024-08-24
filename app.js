@@ -131,6 +131,7 @@ app.get("/listings/filter", asyncWrap(async (req, res) => {
         return res.redirect("/listings")
     } else {
         console.log(listing)
+        req.flash("success",`listing related to ${category}`)
         res.render("listings/option.ejs", { listings: listing });
     }
 }))
