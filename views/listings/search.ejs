@@ -1,4 +1,17 @@
 <% layout("/layouts/boilerplate")%>
+
+
+
+<style>
+  @media only screen and (max-width:699px){
+    .alert.alert-success.offset-3.col-6{
+      display: flex;
+      text-align: center;
+      width: 100%;
+
+    }
+  }
+</style>
   <%if(explicitMessage){%>
 
     <div class="alert alert-success offset-3 col-6" id="temporaryMessage">
@@ -15,11 +28,11 @@
 
 
 
-    <div class="row row-cols-lg-3 row-cols-md-2 row-cols-sm-1">
+    <div class="row g-4 row-cols-lg-3 row-cols-md-2 row-cols-sm-1">
       <%for(let listing of allListings){%>
         <a href="/listings/<%=listing._id%>" class="listing-link">
-          <div class="card col listing-card" style="width: 25rem;">
-            <img src="<%= listing.image.url%>" class="card-img-top" alt="listing_image" style="height: 20rem">
+          <div class="card col listing-card" >
+            <img src="<%= listing.image.url%>" class="card-img-top" alt="listing_image" >
             <div class="card-img-overlay"></div>
             <div class="card-body">
               <p class="card-text">
